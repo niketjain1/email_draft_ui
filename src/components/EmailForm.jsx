@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-function EmailForm({ setResult }) {
+function EmailForm({ setResult, setIsLoading }) {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -22,6 +22,7 @@ function EmailForm({ setResult }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/create-draft`,
@@ -31,6 +32,8 @@ function EmailForm({ setResult }) {
     } catch (error) {
       console.error("Error creating draft:", error);
       setResult({ error: "Failed to create draft" });
+    } finally {
+      setIsLoading(false);
     }
   };
 

@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import EmailForm from "./components/EmailForm";
 import Result from "./components/Result";
+import Loader from "./components/Loader";
 
-function App() {
+const App = () => {
   const [result, setResult] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleReset = () => {
+    setResult(null);
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
@@ -13,12 +19,17 @@ function App() {
           <h1 className="text-2xl font-bold mb-5 text-center">
             Email Draft Creator
           </h1>
-          <EmailForm setResult={setResult} />
-          {result && <Result result={result} />}
+          {isLoading ? (
+            <Loader />
+          ) : result ? (
+            <Result result={result} onReset={handleReset} />
+          ) : (
+            <EmailForm setResult={setResult} setIsLoading={setIsLoading} />
+          )}
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default App;
